@@ -15,53 +15,46 @@ public class PlayerController : MonoBehaviour
     }
     private void Update()
     {
+        //地上にいる場合の処理
+        if (charaGround.GetGround())
+        {
+            //ジャンプ入力がある場合の処理
+            //if (inputProvider.JumpInput)
+            //{
+            //    playerMove.Jump();
+            //}
+            if (inputProvider.DushInput)
+            {
+                playerMove.CanDush();
+            }
+            
+            //移動入力がある場合の処理
+            if (inputProvider.moveInput != Vector3.zero)
+            {
+                playerMove.Move(inputProvider.moveInput);
+            }
+            else
+            {
+                playerMove.Move(Vector3.zero);
+                playerMove.DushEnd();
+            }
+        }
+        else
+        {
+            //空中にいる場合の処理
+            if (inputProvider.moveInput != Vector3.zero)
+            {
+                playerMove.AirMove(inputProvider.moveInput);
+            }
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        //空中にいる場合の処理
         if (!charaGround.GetGround())
         {
-            if (inputProvider.AttackInput)
-            {
-                playerMove.RotationCameraFoward();
-                playerMove.AttackHop();
-                return;
-            }
-
-            if (inputProvider.GuardHold && inputProvider.moveInput != Vector3.zero)
-            {
-                playerMove.StartDodge(inputProvider.moveInput, 0.5f);
-                return;
-            }
-            return;
+            playerMove.ApplyGravity();
         }
-
-        if (inputProvider.JumpInput)
-        {
-            
-        }
-
-        if (inputProvider.moveInput != Vector3.zero)
-        {
-            if (inputProvider.GuardHold)
-            {
-
-                playerMove.StartDodge(inputProvider.moveInput, 0.5f);
-                return;
-            }
-
-            return;
-        }
-
-        if (inputProvider.AttackHold)
-        {
-            //攻撃状態に遷移
-            playerMove.RotationCameraFoward();
-            return;
-        }
-
-        if (inputProvider.GuardHold)
-        {
-            //ガード状態に遷移
-            return;
-        }
-
-        //普通状態に戻す
     }
 }

@@ -7,24 +7,32 @@ public class PlayerMovement : MonoBehaviour
     private Camera mainCam;
     private Vector3 moveForward;
 
-    [SerializeField]
+    [SerializeField,Tooltip("移動速度")]
     private float moveSpeed;
+    [SerializeField,Tooltip("停止率")]
+    private float stopRate = 0.9f;
+    [SerializeField,Tooltip("走行速度倍率")]
+    private float ranSpeedRate = 2.0f;
 
-    [SerializeField]
+    [SerializeField,Tooltip("回転時間率")]
     private float turnTimeRate = 0.5f;
 
-    [SerializeField]
+    [SerializeField,Tooltip("空中力")]
     private float AirForce = 5f;
 
-    [SerializeField] 
+    [SerializeField,Tooltip("最大水平速度")]
     float maxHorizontalSpeed = 5f;
 
-    [Header("Jump")]
-    [SerializeField]
-    private float jumpPower = 350f;
+    private bool isRun;
 
-    [SerializeField]
-    private float jumpInterval = 0.3f;
+    [Header("Jump")]
+    [SerializeField] private float jumpSpeed = 9f;
+
+    [Header("Gravity")]
+    [SerializeField] private float riseGravity = 25f;
+    [SerializeField] private float fallGravity = 50f;
+
+    
 
     [SerializeField]
     private float atkHopPower = 300f;
@@ -53,23 +61,32 @@ public class PlayerMovement : MonoBehaviour
             new Vector3(1, 0, 1)
         ).normalized;
 
-        moveForward = cameraForward * move.z
-                    + mainCam.transform.right * move.x;
+        moveForward = (cameraForward * move.z
+                    + mainCam.transform.right * move.x).normalized;
 
-        moveForward = moveForward.normalized;
+        float speed = moveSpeed;
 
-        if (move.magnitude > 0)
+        if(isRun) speed *= ranSpeedRate;
+
+        if (move.magnitude > 0.1f)
         {
-            rb.linearVelocity = moveForward * moveSpeed * move.magnitude
+            rb.linearVelocity = moveForward * speed
                         + new Vector3(0, rb.linearVelocity.y, 0);
         }
         else
         {
-            rb.linearVelocity = new Vector3(0, rb.linearVelocity.y, 0);
+            Debug.Log("StopMovement");
+            Vector2 horizontalVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.z);
+            horizontalVelocity = horizontalVelocity * stopRate;
+            if (horizontalVelocity.magnitude < 0.1f)
+            {
+                horizontalVelocity = Vector2.zero;
+            }
+            rb.linearVelocity = new Vector3(horizontalVelocity.x, rb.linearVelocity.y, horizontalVelocity.y);
         }
         Rotation(move);
     }
-    public void AerialMove(Vector3 move)//空中移動処理
+    public void AirMove(Vector3 move)//空中移動処理
     {
         Vector3 cameraForward = Vector3.Scale(
             mainCam.transform.forward,
@@ -93,9 +110,16 @@ public class PlayerMovement : MonoBehaviour
             horizontal = horizontal.normalized * maxHorizontalSpeed;
             rb.linearVelocity = new Vector3(horizontal.x, v.y, horizontal.z);
         }
-        Rotation(move);
+        //Rotation(move);
     }
-
+    public void CanDush()
+    {
+        isRun = true;
+    }
+    public void DushEnd()
+    {
+        isRun = false;
+    }
     private void Rotation(Vector3 move) //回転処理
     {
         Vector3 cameraForward = Vector3.Scale(
@@ -139,12 +163,35 @@ public class PlayerMovement : MonoBehaviour
                 Time.deltaTime * 180
             );
     }
-    public void Jamp(bool isGround)
+
+
+
+    public void Jump()
     {
-        if (isGround)
+        Vector3 velocity = rb.linearVelocity;
+
+        // 現在のY速度をリセット
+        velocity.y = jumpSpeed;
+
+        rb.linearVelocity = velocity;
+    }
+
+    public void ApplyGravity()
+    {
+        Vector3 velocity = rb.linearVelocity;
+
+        // 上昇中
+        if (velocity.y > 0f)
         {
-            rb.AddForce(transform.up * jumpPower, ForceMode.Impulse);
+            velocity.y -= riseGravity * Time.fixedDeltaTime;
         }
+        // 下降中
+        else
+        {
+            velocity.y -= fallGravity * Time.fixedDeltaTime;
+        }
+
+        rb.linearVelocity = velocity;
     }
     public void AttackHop()
     {
