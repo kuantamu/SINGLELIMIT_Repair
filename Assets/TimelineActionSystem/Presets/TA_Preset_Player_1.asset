@@ -10,7 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4b770b0b362d5104481d9f8bbde9e7ed, type: 3}
-  m_Name: NewTimelinePreset
+  m_Name: TA_Preset_Player_1
   m_EditorClassIdentifier: Assembly-CSharp::TimelineActionPreset
-  presetName: New Preset
-  entries: []
+  presetName: Player_1
+  entries:
+  - id: 0
+    actionName: 
+    timeline: {fileID: 0}
+    animationClip: {fileID: 0}
+    defaultSpeed: 0
+    transitionDuration: 0
+  - id: 0
+    actionName: 
+    timeline: {fileID: 0}
+    animationClip: {fileID: 0}
+    defaultSpeed: 0
+    transitionDuration: 0

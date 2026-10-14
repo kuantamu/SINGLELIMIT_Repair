@@ -666,6 +666,7 @@ GameObject:
   - component: {fileID: 1046690010}
   - component: {fileID: 1046690017}
   - component: {fileID: 1046690016}
+  - component: {fileID: 1046690019}
   - component: {fileID: 1046690018}
   m_Layer: 0
   m_Name: Player
@@ -836,12 +837,30 @@ MonoBehaviour:
   m_GameObject: {fileID: 1046690009}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cd861b3ccc67f3b44970fcad470833cb, type: 3}
+  m_Script: {fileID: 11500000, guid: 35de2730f62184744858d16885ee6c69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TimelineActionPlayer
   animator: {fileID: 0}
+  eventReceiver: {fileID: 0}
   presets:
-  - {fileID: 11400000, guid: 5115eb4066e57aa44888bb394467ce47, type: 2}
+  - {fileID: 11400000, guid: 912057253fdd86e47b1d05863fbb4e04, type: 2}
+--- !u!320 &1046690019
+PlayableDirector:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1046690009}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_PlayableAsset: {fileID: 0}
+  m_InitialState: 1
+  m_WrapMode: 2
+  m_DirectorUpdateMode: 1
+  m_InitialTime: 0
+  m_SceneBindings: []
+  m_ExposedReferences:
+    m_References: []
 --- !u!1 &1142770171
 GameObject:
   m_ObjectHideFlags: 0
