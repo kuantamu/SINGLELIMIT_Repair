@@ -28,6 +28,9 @@ public sealed class TimelineActionPlayer : MonoBehaviour
     private float eventSpeed;
     private bool eventPlaying;
 
+    private TimelineActionPreset playingPreset;
+    private TimelineAsset playingTimeline;
+
     private void Awake()
     {
         if (animator == null)
@@ -72,8 +75,12 @@ public sealed class TimelineActionPlayer : MonoBehaviour
         foreach (var entry in preset.Entries)
         {
             if (entry.id == entryId)
-                return PlayEntry(entry, entry.defaultSpeed,
-                    entry.transitionDuration);
+                return PlayEntry(
+                    preset,
+                    entry,
+                    entry.defaultSpeed,
+                    entry.transitionDuration
+                    );
         }
 
         Debug.LogWarning($"Timeline ID が見つかりません: {entryId}", this);
@@ -102,7 +109,12 @@ public sealed class TimelineActionPlayer : MonoBehaviour
                 ? transition
                 : entry.transitionDuration;
 
-            return PlayEntry(entry, actualSpeed, actualTransition);
+            return PlayEntry(
+                preset,
+                entry,
+                actualSpeed,
+                actualTransition
+                );
         }
 
         Debug.LogWarning($"Timeline が見つかりません: {actionName}", this);
@@ -122,13 +134,24 @@ public sealed class TimelineActionPlayer : MonoBehaviour
     }
 
     private bool PlayEntry(
-        TimelineActionPreset.Entry entry,
-        float speed,
-        float duration)
+    TimelineActionPreset preset,
+    TimelineActionPreset.Entry entry,
+    float speed,
+    float duration)
     {
+        //null チェック
         if (entry == null || entry.animationClip == null)
         {
             Debug.LogWarning("AnimationClip が未設定です。", this);
+            return false;
+        }
+
+        // 同じプリセットの同じ Timeline が再生中なら無視する。
+        if (eventPlaying &&
+            playingPreset == preset &&
+            entry.timeline != null &&
+            playingTimeline == entry.timeline)
+        {
             return false;
         }
 
@@ -169,7 +192,9 @@ public sealed class TimelineActionPlayer : MonoBehaviour
         eventSpeed = Mathf.Max(0.01f, speed);
 
         if (entry.timeline != null)
-            StartEventTimeline(entry.timeline);
+        {
+            StartEventTimeline(entry.timeline, preset);
+        }
 
         if (currentSlot < 0 || duration <= 0f)
         {
@@ -191,7 +216,10 @@ public sealed class TimelineActionPlayer : MonoBehaviour
         return true;
     }
 
-    private void StartEventTimeline(TimelineAsset asset)
+    // Timeline の再生を開始する。
+    private void StartEventTimeline(
+    TimelineAsset asset,
+    TimelineActionPreset preset)
     {
         eventDirector.Stop();
         eventDirector.playableAsset = asset;
@@ -200,12 +228,17 @@ public sealed class TimelineActionPlayer : MonoBehaviour
         foreach (var track in asset.GetOutputTracks())
         {
             if (track is ActionEventTrack)
+            {
                 eventDirector.SetGenericBinding(track, eventReceiver);
+            }
         }
 
         eventDirector.Play();
         eventDirector.time = 0d;
         eventDirector.Evaluate();
+
+        playingPreset = preset;
+        playingTimeline = asset;
         eventPlaying = true;
     }
 
@@ -256,15 +289,22 @@ public sealed class TimelineActionPlayer : MonoBehaviour
             graph.Evaluate(dt);
     }
 
+    // Timeline の再生を停止する。
     private void StopEventTimeline()
     {
         if (eventDirector != null)
+        {
             eventDirector.Stop();
+        }
 
         eventPlaying = false;
+        playingPreset = null;
+        playingTimeline = null;
 
         if (eventReceiver != null)
+        {
             eventReceiver.ResetAllAttackWindows();
+        }
     }
 
     private void ClearSlot(int slot)

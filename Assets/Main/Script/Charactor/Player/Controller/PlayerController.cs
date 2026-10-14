@@ -6,6 +6,8 @@ public class PlayerController : MonoBehaviour
     private IInputProvider inputProvider;
     private PlayerMovement playerMove;
     private CharaGroundColDitection charaGround;
+    [SerializeField]
+    private TimelineActionPlayer actionPlayer;
 
     private void Awake()
     {
@@ -32,11 +34,13 @@ public class PlayerController : MonoBehaviour
             if (inputProvider.moveInput != Vector3.zero)
             {
                 playerMove.Move(inputProvider.moveInput);
+                actionPlayer.Play("Player_1", 1);
             }
             else
             {
                 playerMove.Move(Vector3.zero);
                 playerMove.DushEnd();
+                actionPlayer.Play("Player_1", 0);
             }
         }
         else

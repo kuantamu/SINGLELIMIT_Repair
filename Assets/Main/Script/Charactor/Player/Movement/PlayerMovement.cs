@@ -75,7 +75,6 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            Debug.Log("StopMovement");
             Vector2 horizontalVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.z);
             horizontalVelocity = horizontalVelocity * stopRate;
             if (horizontalVelocity.magnitude < 0.1f)

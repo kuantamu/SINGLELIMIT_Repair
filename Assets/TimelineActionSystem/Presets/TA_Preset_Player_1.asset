@@ -15,14 +15,14 @@ MonoBehaviour:
   presetName: Player_1
   entries:
   - id: 0
-    actionName: 
-    timeline: {fileID: 0}
-    animationClip: {fileID: 0}
-    defaultSpeed: 0
-    transitionDuration: 0
-  - id: 0
-    actionName: 
-    timeline: {fileID: 0}
-    animationClip: {fileID: 0}
-    defaultSpeed: 0
-    transitionDuration: 0
+    actionName: Idel
+    timeline: {fileID: 11400000, guid: 7422ef5e74a8bef4b86195da8b3350ed, type: 2}
+    animationClip: {fileID: -2576967968662016515, guid: 56fd86b76fc74d24d83522069f5deb9b, type: 3}
+    defaultSpeed: 1
+    transitionDuration: 0.1
+  - id: 1
+    actionName: RunFoward
+    timeline: {fileID: 11400000, guid: 2d2807896194ed34fa82cfd328831ec8, type: 2}
+    animationClip: {fileID: 3094330708855449807, guid: 6deac83e30d8acd4cbb8c7d8a11545bd, type: 3}
+    defaultSpeed: 1
+    transitionDuration: 0.1
