@@ -15,6 +15,14 @@ public class CharaGroundColDitection : MonoBehaviour
         }
     }
 
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.transform.tag == "Ground")
+        {
+            isGround = true;
+        }
+    }
+
     private void OnTriggerExit(Collider other)
     {
         if (other.transform.tag == "Ground")

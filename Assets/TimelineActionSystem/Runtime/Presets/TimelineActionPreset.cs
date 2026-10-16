@@ -17,6 +17,9 @@ public sealed class TimelineActionPreset : ScriptableObject
         public string actionName;
         public TimelineAsset timeline;
 
+        [Tooltip("待機など、アニメーションをループ再生する")]
+        public bool loopAnimation;
+
         [Tooltip("ブレンド対象のアニメーション")]
         public AnimationClip animationClip;
 

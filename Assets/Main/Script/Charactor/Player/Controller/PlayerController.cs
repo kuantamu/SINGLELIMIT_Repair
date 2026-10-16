@@ -20,6 +20,10 @@ public class PlayerController : MonoBehaviour
         //地上にいる場合の処理
         if (charaGround.GetGround())
         {
+            if (inputProvider.AttackInput)
+            {
+                actionPlayer.ForcePlay("Player_1", 2, 1f, 0.15f, false);
+            }
             //ジャンプ入力がある場合の処理
             //if (inputProvider.JumpInput)
             //{
@@ -42,6 +46,7 @@ public class PlayerController : MonoBehaviour
                 playerMove.DushEnd();
                 actionPlayer.Play("Player_1", 0);
             }
+            
         }
         else
         {
