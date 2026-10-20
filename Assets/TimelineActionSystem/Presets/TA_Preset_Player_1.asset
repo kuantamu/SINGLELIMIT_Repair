@@ -49,3 +49,17 @@ MonoBehaviour:
     animationClip: {fileID: -203655887218126122, guid: 1e0136e0acefd1f4b9dc7fb3de3c0614, type: 3}
     defaultSpeed: 1
     transitionDuration: 0.15
+  - id: 5
+    actionName: Attack1
+    timeline: {fileID: 11400000, guid: a4ee96efa6ac344419bf98124462e78c, type: 2}
+    loopAnimation: 0
+    animationClip: {fileID: 3094330708855449807, guid: fcae9c41b8da9dc46974f5351a44bb66, type: 3}
+    defaultSpeed: 1
+    transitionDuration: 0.15
+  - id: 6
+    actionName: Attack2
+    timeline: {fileID: 11400000, guid: 47387307b825aaf40a37cf730c7e78dc, type: 2}
+    loopAnimation: 0
+    animationClip: {fileID: 3094330708855449807, guid: fcae9c41b8da9dc46974f5351a44bb66, type: 3}
+    defaultSpeed: 1
+    transitionDuration: 0.15

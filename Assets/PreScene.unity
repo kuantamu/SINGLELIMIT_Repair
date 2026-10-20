@@ -737,6 +737,7 @@ GameObject:
   - component: {fileID: 1046690018}
   - component: {fileID: 1046690021}
   - component: {fileID: 1046690020}
+  - component: {fileID: 1046690022}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -818,7 +819,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5dd101c93aa945f4daa6247ac7f0f112, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
-  actionPlayer: {fileID: 1046690018}
 --- !u!114 &1046690014
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -925,7 +925,7 @@ PlayableDirector:
   m_GameObject: {fileID: 1046690009}
   m_Enabled: 1
   serializedVersion: 3
-  m_PlayableAsset: {fileID: 11400000, guid: 9f7078f4a52503d45b18a4ff697452ac, type: 2}
+  m_PlayableAsset: {fileID: 11400000, guid: a4ee96efa6ac344419bf98124462e78c, type: 2}
   m_InitialState: 1
   m_WrapMode: 2
   m_DirectorUpdateMode: 1
@@ -944,6 +944,18 @@ PlayableDirector:
   - key: {fileID: -595336501661427741, guid: 9f7078f4a52503d45b18a4ff697452ac, type: 2}
     value: {fileID: 670365258}
   - key: {fileID: 2652637317044490431, guid: 9f7078f4a52503d45b18a4ff697452ac, type: 2}
+    value: {fileID: 1046690021}
+  - key: {fileID: -8125287059187133477, guid: a4ee96efa6ac344419bf98124462e78c, type: 2}
+    value: {fileID: 670365258}
+  - key: {fileID: 398244274594406666, guid: a4ee96efa6ac344419bf98124462e78c, type: 2}
+    value: {fileID: 1046690021}
+  - key: {fileID: -8125287059187133477, guid: 47387307b825aaf40a37cf730c7e78dc, type: 2}
+    value: {fileID: 670365258}
+  - key: {fileID: 398244274594406666, guid: 47387307b825aaf40a37cf730c7e78dc, type: 2}
+    value: {fileID: 1046690021}
+  - key: {fileID: 260981569075542600, guid: a4ee96efa6ac344419bf98124462e78c, type: 2}
+    value: {fileID: 1046690021}
+  - key: {fileID: -1370322304043704052, guid: aa5b5d41241a62c4ebd2346aa71393ba, type: 2}
     value: {fileID: 1046690021}
   m_ExposedReferences:
     m_References: []
@@ -1058,6 +1070,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ActionEventReceiver
   effectRoot: {fileID: 1046690015}
   audioSource: {fileID: 1046690020}
+--- !u!114 &1046690022
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1046690009}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d631b897d14376642b51297b0448e86f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerActionController
+  actionPlayer: {fileID: 1046690018}
+  timelineGroup: Player_1
+  idleActionId: 0
+  moveActionId: 1
+  guardActionId: 3
+  dodgeActionId: 4
+  attackActionIds: 020000000500000006000000
+  attackBufferDuration: 0.2
 --- !u!1 &1322244943
 GameObject:
   m_ObjectHideFlags: 0
@@ -1100,6 +1132,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1678673853}
   - component: {fileID: 1678673852}
+  - component: {fileID: 1678673854}
   m_Layer: 0
   m_Name: Directional Light
   m_TagString: Untagged
@@ -1187,6 +1220,35 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!114 &1678673854
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1678673851}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.UniversalAdditionalLightData
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_CustomShadowLayers: 0
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
+  m_SoftShadowQuality: 0
+  m_RenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_ShadowRenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_Version: 4
+  m_LightLayerMask: 1
+  m_ShadowLayerMask: 1
+  m_RenderingLayers: 1
+  m_ShadowRenderingLayers: 1
 --- !u!1 &1834702709
 GameObject:
   m_ObjectHideFlags: 0

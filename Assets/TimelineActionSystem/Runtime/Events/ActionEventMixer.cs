@@ -68,6 +68,9 @@ public sealed class ActionEventMixer : PlayableBehaviour
                         receiver.SetAttackWindow(
                             behaviour.attackId, true);
                         break;
+                    case ActionEventType.ComboWindow:
+                        receiver.SetComboWindow(true);
+                        break;
                 }
             }
 
@@ -89,6 +92,9 @@ public sealed class ActionEventMixer : PlayableBehaviour
                     case ActionEventType.AttackWindow:
                         receiver.SetAttackWindow(
                             behaviour.attackId, false);
+                        break;
+                    case ActionEventType.ComboWindow:
+                        receiver.SetComboWindow(false);
                         break;
                 }
             }

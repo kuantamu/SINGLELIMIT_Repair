@@ -17,8 +17,8 @@ public sealed class TimelineActionPlayer : MonoBehaviour
     [SerializeField] private string initialDefaultPreset = "";
     [SerializeField] private string initialDefaultAction = "";
 
-    public event Action<TimelineActionPreset.Entry> PlaybackStarted;
-    public event Action<TimelineActionPreset.Entry> PlaybackEnded;
+    public event Action<string, TimelineActionPreset.Entry> PlaybackStarted;
+    public event Action<string, TimelineActionPreset.Entry> PlaybackEnded;
 
     private PlayableGraph graph;
     private AnimationMixerPlayable mixer;
@@ -403,8 +403,7 @@ public sealed class TimelineActionPlayer : MonoBehaviour
 
         if (entry.timeline != null)
             StartEventTimeline(entry.timeline);
-
-        PlaybackStarted?.Invoke(entry);
+        PlaybackStarted?.Invoke(preset.PresetName, entry);
         return true;
     }
 
@@ -452,6 +451,7 @@ public sealed class TimelineActionPlayer : MonoBehaviour
             return;
         }
 
+        string endedPresetName = activePreset.PresetName;
         var endedEntry = activeEntry;
 
         StopEventTimeline();
@@ -461,7 +461,7 @@ public sealed class TimelineActionPlayer : MonoBehaviour
         activeAllowsPlaybackChange = true;
         activeIsDefault = false;
 
-        PlaybackEnded?.Invoke(endedEntry);
+        PlaybackEnded?.Invoke(endedPresetName, endedEntry);
     }
 
     // --------------------------------------------------
