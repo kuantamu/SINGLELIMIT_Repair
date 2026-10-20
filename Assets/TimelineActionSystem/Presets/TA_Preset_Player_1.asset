@@ -35,3 +35,17 @@ MonoBehaviour:
     animationClip: {fileID: 3094330708855449807, guid: fcae9c41b8da9dc46974f5351a44bb66, type: 3}
     defaultSpeed: 1
     transitionDuration: 0.15
+  - id: 3
+    actionName: Guard
+    timeline: {fileID: 11400000, guid: cd72bae162eecd14ca24caf9b0b8aa26, type: 2}
+    loopAnimation: 0
+    animationClip: {fileID: 7400000, guid: 9f88fcfd9081f1645a82a75501000f56, type: 2}
+    defaultSpeed: 1
+    transitionDuration: 0.15
+  - id: 4
+    actionName: Dodge
+    timeline: {fileID: 11400000, guid: 9f7078f4a52503d45b18a4ff697452ac, type: 2}
+    loopAnimation: 0
+    animationClip: {fileID: -203655887218126122, guid: 1e0136e0acefd1f4b9dc7fb3de3c0614, type: 3}
+    defaultSpeed: 1
+    transitionDuration: 0.15

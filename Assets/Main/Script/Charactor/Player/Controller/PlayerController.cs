@@ -20,6 +20,18 @@ public class PlayerController : MonoBehaviour
         //地上にいる場合の処理
         if (charaGround.GetGround())
         {
+            if (inputProvider.DodgeInput)
+            {
+                actionPlayer.Play("Player_1", 4, 1f, 0.15f, false);
+                playerMove.StartDodge(inputProvider.moveInput, 0.5f);
+                return;
+            }
+            if (inputProvider.GuardHold)
+            {
+                actionPlayer.Play("Player_1", 3);
+                return;
+            }
+            
             if (inputProvider.AttackInput)
             {
                 actionPlayer.ForcePlay("Player_1", 2, 1f, 0.15f, false);

@@ -20,7 +20,7 @@ public class PlayerInputHandler : MonoBehaviour, IInputProvider
         AttackInput = Input.GetMouseButtonDown(0);
         AttackHold = Input.GetMouseButton(0);
         GuardHold = Input.GetMouseButton(1);
-        DodgeInput = Input.GetMouseButton(1) && MoveInputs() != Vector3.zero;
+        DodgeInput = GuardHold && moveInput != Vector3.zero;
         JumpInput = Input.GetKey(KeyCode.Space);
         SpecialInput = Input.GetKey(KeyCode.E);
 
