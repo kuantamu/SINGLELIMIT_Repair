@@ -66,7 +66,7 @@ public class PlayerMovement : MonoBehaviour
 
         float speed = moveSpeed;
 
-        if(isRun) speed *= ranSpeedRate;
+        if (isRun) speed *= ranSpeedRate;
 
         if (move.magnitude > 0.1f)
         {
@@ -76,14 +76,16 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             Vector2 horizontalVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.z);
-            horizontalVelocity = horizontalVelocity * stopRate;
-            if (horizontalVelocity.magnitude < 0.1f)
-            {
-                horizontalVelocity = Vector2.zero;
-            }
+            horizontalVelocity = Vector2.zero;
             rb.linearVelocity = new Vector3(horizontalVelocity.x, rb.linearVelocity.y, horizontalVelocity.y);
         }
         Rotation(move);
+    }
+    public void MoveStop()
+    {
+        Vector2 horizontalVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.z);
+        horizontalVelocity = Vector2.zero;
+        rb.linearVelocity = new Vector3(horizontalVelocity.x, rb.linearVelocity.y, horizontalVelocity.y);
     }
     public void AirMove(Vector3 move)//空中移動処理
     {

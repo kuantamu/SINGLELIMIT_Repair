@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Windows;
 
 public enum PlayerActionState
 {
@@ -8,6 +9,7 @@ public enum PlayerActionState
     Dodge,      // 回避
     Attack,     // 攻撃
     Charge,     // チャージ
+    SpecialAttack,    // 特殊行動
 }
 
 [RequireComponent(typeof(PlayerMovement))]
@@ -28,6 +30,7 @@ public class PlayerActionController : MonoBehaviour
     [SerializeField] private int guardActionId = 3;
     [SerializeField] private int dodgeActionId = 4;
     [SerializeField] private int[] attackActionIds = { 2, 5, 6 };
+    [SerializeField] private int specialActionId = 7;
 
     public PlayerActionState CurrentState { get; private set; }
         = PlayerActionState.Locomotion;
@@ -47,16 +50,8 @@ public class PlayerActionController : MonoBehaviour
 
     #endregion
 
-    private void BufferAttackInput()
-    {
-        attackBufferExpireTime = Time.time + attackBufferDuration;
-    }
 
-    private void ClearAttackBuffer()
-    {
-        attackBufferExpireTime = -1f;
-    }
-
+    #region Unity Lifecycle
     private void Awake()
     {
         playerMove = GetComponent<PlayerMovement>();
@@ -92,24 +87,13 @@ public class PlayerActionController : MonoBehaviour
             CurrentState == PlayerActionState.Attack && open;
         Debug.Log($"OnComboWindowChanged: {comboWindowOpen}");
     }
-    //// Timelineのコンボ受付開始イベントから呼び出す
-    //public void OpenComboWindow()
-    //{
-    //    if (CurrentState == PlayerActionState.Attack)
-    //        comboWindowOpen = true;
-    //}
-
-    //public void CloseComboWindow()
-    //{
-    //    comboWindowOpen = false;
-    //}
 
     // TimelineActionPlayerの再生を終了する
     private void OnPlaybackEnded(
         string presetName, 
         TimelineActionPreset.Entry entry)
     {
-
+        Debug.Log($"OnPlaybackEnded: {presetName}, {entry.id}");
         if (presetName != expectedPresetName ||
     entry.id != expectedActionId)
         {
@@ -117,7 +101,8 @@ public class PlayerActionController : MonoBehaviour
         }
 
         if (CurrentState == PlayerActionState.Attack ||
-            CurrentState == PlayerActionState.Dodge)
+            CurrentState == PlayerActionState.Dodge ||
+            CurrentState == PlayerActionState.SpecialAttack)
         {
             CurrentState = PlayerActionState.Locomotion;
 
@@ -128,16 +113,34 @@ public class PlayerActionController : MonoBehaviour
             ClearAttackBuffer();
         }
     }
-
+    #endregion
     public void HandleInput(IInputProvider input)
     {
         bool grounded = charaGround.GetGround();
 
+        if(grounded == false)
+        {
+            playerMove.AirMove(input.moveInput);
+            return;
+        }
+
         Debug.Log($"HandleInput: {CurrentState}");
+
         // 攻撃中は攻撃専用の処理だけ行う
         if (CurrentState == PlayerActionState.Attack)
         {
             HandleAttackInput(input);
+            return;
+        }
+        if(CurrentState == PlayerActionState.SpecialAttack)
+        {
+            return;
+        }
+
+        if (input.SpecialInput &&
+        CurrentState != PlayerActionState.SpecialAttack)
+        {
+            StartSpecialAttack();
             return;
         }
 
@@ -167,6 +170,11 @@ public class PlayerActionController : MonoBehaviour
         if (CurrentState == PlayerActionState.Guard)
             CurrentState = PlayerActionState.Locomotion;
 
+        if(input.SpecialInput)
+        {
+            actionPlayer.ForcePlay(timelineGroup, specialActionId, 1f, 0.15f, false);
+        }
+
         if (input.AttackInput && CurrentState != PlayerActionState.Attack)
         {
             StartAttack(1);
@@ -175,7 +183,6 @@ public class PlayerActionController : MonoBehaviour
 
         if (input.DushInput)
             playerMove.CanDush();
-
         playerMove.Move(input.moveInput);
 
         if (input.moveInput != Vector3.zero)
@@ -189,11 +196,15 @@ public class PlayerActionController : MonoBehaviour
         }
     }
 
+    #region 攻撃中の入力処理
+
     private void HandleAttackInput(IInputProvider input)
     {
+        playerMove.MoveStop();
         // 攻撃の先行入力は受付期間外でも保存する
         if (input.AttackInput)
         {
+            
             BufferAttackInput();
         }
             
@@ -258,25 +269,13 @@ public class PlayerActionController : MonoBehaviour
         }
     }
 
-    private void CancelAttack()
-    {
-        comboWindowOpen = false;
-        dodgeCancelOpen = false;
 
-        // コンボ段数をリセット
-        attackStep = 0;
-
-        // 古い先行入力を持ち越さない
-        ClearAttackBuffer();
-
-        CurrentState = PlayerActionState.Locomotion;
-    }
 
     private void StartAttack(int step)
     {
         if (step < 1 || step > attackActionIds.Length)
             return;
-
+        
         CurrentState = PlayerActionState.Attack;
         attackStep = step;
 
@@ -295,7 +294,19 @@ public class PlayerActionController : MonoBehaviour
             false
         );
     }
+    private void CancelAttack()
+    {
+        comboWindowOpen = false;
+        dodgeCancelOpen = false;
 
+        // コンボ段数をリセット
+        attackStep = 0;
+
+        // 古い先行入力を持ち越さない
+        ClearAttackBuffer();
+
+        CurrentState = PlayerActionState.Locomotion;
+    }
     private void StartDodge(Vector3 moveInput)
     {
         CurrentState = PlayerActionState.Dodge;
@@ -317,10 +328,43 @@ public class PlayerActionController : MonoBehaviour
         playerMove.StartDodge(moveInput, 0.5f);
     }
 
+    private void StartSpecialAttack()
+    {
+        CurrentState = PlayerActionState.SpecialAttack;
+
+        comboWindowOpen = false;
+        dodgeCancelOpen = false;
+        attackStep = 0;
+
+        expectedPresetName = timelineGroup;
+        expectedActionId = specialActionId;
+
+        actionPlayer.ForcePlay(
+            timelineGroup,
+            specialActionId,
+            1f,
+            0.15f,
+            false
+        );
+    }
+
+    private void BufferAttackInput()
+    {
+        attackBufferExpireTime = Time.time + attackBufferDuration;
+    }
+
+    private void ClearAttackBuffer()
+    {
+        attackBufferExpireTime = -1f;
+    }
+    #endregion
+
     private void FixedUpdate()
     {
         if (!charaGround.GetGround())
             playerMove.ApplyGravity();
     }
+
+
 }
 
