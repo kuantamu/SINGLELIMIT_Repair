@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -124,6 +125,14 @@ public sealed class ActionEventReceiver : MonoBehaviour
         activeAttacks.Clear();
         StopAllVfx();
 
-        // 実際の攻撃判定システムにも終了を通知する。
+        SetComboWindow(false);
+        // 攻撃判定のリセットもここで行う。
+    }
+
+    public event Action<bool> ComboWindowChanged;
+
+    public void SetComboWindow(bool open)
+    {
+        ComboWindowChanged?.Invoke(open);
     }
 }

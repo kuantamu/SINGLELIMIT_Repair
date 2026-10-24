@@ -6,7 +6,8 @@ public enum ActionEventType
 {
     PlayVfx,
     PlaySfx,
-    AttackWindow
+    AttackWindow,
+    ComboWindow
 }
 
 public sealed class ActionEventClip : PlayableAsset
