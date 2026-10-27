@@ -74,6 +74,11 @@ public sealed class ActionEventMixer : PlayableBehaviour
                     case ActionEventType.ComboWindow:
                         receiver.SetComboWindow(true);
                         break;
+
+                    case ActionEventType.ApplyBuff:
+                        // クリップの開始時に、自分へバフ・デバフを付与する(1回だけ)
+                        receiver.ApplyBuffsToSelf(behaviour.selfBuffs);
+                        break;
                 }
             }
 

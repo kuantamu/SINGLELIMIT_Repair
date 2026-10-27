@@ -919,8 +919,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6e8d4aa6fb761c40b97f61bae4bc638, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DamagePopupGenerator
-  damageUI: {fileID: 0}
-  buffUI: {fileID: 0}
+  damageUI: {fileID: 3029409561959466786, guid: cc0d87c0e9a62e943aa20cfa958d5378, type: 3}
+  buffUI: {fileID: 185492872083190597, guid: 8bc50c78c624dbf4896cf5f0bcaa1904, type: 3}
 --- !u!114 &1046690018
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -948,7 +948,7 @@ PlayableDirector:
   m_GameObject: {fileID: 1046690009}
   m_Enabled: 1
   serializedVersion: 3
-  m_PlayableAsset: {fileID: 11400000, guid: 47387307b825aaf40a37cf730c7e78dc, type: 2}
+  m_PlayableAsset: {fileID: 11400000, guid: c03f9e881bf299448a037b73d49a8969, type: 2}
   m_InitialState: 1
   m_WrapMode: 2
   m_DirectorUpdateMode: 1
@@ -989,6 +989,8 @@ PlayableDirector:
   - key: {fileID: -6921481187038151899, guid: a4ee96efa6ac344419bf98124462e78c, type: 2}
     value: {fileID: 1046690021}
   - key: {fileID: -1696373802614852627, guid: 47387307b825aaf40a37cf730c7e78dc, type: 2}
+    value: {fileID: 1046690021}
+  - key: {fileID: -6975796388036232229, guid: c03f9e881bf299448a037b73d49a8969, type: 2}
     value: {fileID: 1046690021}
   m_ExposedReferences:
     m_References: []

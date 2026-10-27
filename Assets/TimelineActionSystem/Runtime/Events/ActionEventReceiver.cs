@@ -12,7 +12,7 @@ public sealed class ActionEventReceiver : MonoBehaviour
     [Tooltip("攻撃判定 Box の基準になる Transform。未設定なら Effect Root、それも無ければこのオブジェクト")]
     [SerializeField] private Transform attackRoot;
 
-    [Tooltip("攻撃するキャラ(攻撃力・陣営の判定に使う)。未設定ならこのオブジェクトか親から探す")]
+    [Tooltip("このレシーバーのキャラ(攻撃力・陣営の判定、自分へのバフ付与の対象)。未設定ならこのオブジェクトか親から探す")]
     [SerializeField] private CharactorStatus attacker;
 
     [Tooltip("ONにすると、攻撃判定の生成状況と当たらなかった理由をConsoleに出す")]
@@ -333,6 +333,33 @@ public sealed class ActionEventReceiver : MonoBehaviour
         if (!Application.isPlaying)
             UnityEditor.SceneView.RepaintAll();
 #endif
+    }
+
+    // --------------------------------------------------
+    // 自分へのバフ・デバフ
+    // --------------------------------------------------
+
+    /// <summary>
+    /// 自分(Attacker に設定したキャラ)にバフ・デバフを付与する。
+    /// 再生中だけ働く(エディットモードの Timeline プレビューでは、ステータスを変えない)。
+    /// </summary>
+    public void ApplyBuffsToSelf(IEnumerable<BuffGrant> grants)
+    {
+        // プレビュー中に付与すると、シーン上のステータスが書き換わってしまうため
+        if (!Application.isPlaying || grants == null)
+            return;
+
+        if (attacker == null)
+        {
+            Debug.LogWarning(
+                "自分への付与に失敗: CharactorStatus が見つかりません。Attacker を設定してください。", this);
+            return;
+        }
+
+        if (debugLog)
+            Debug.Log($"[ActionEventReceiver] 自分「{attacker.name}」にバフ・デバフを付与", this);
+
+        attacker.GiveBuffs(attacker, grants);
     }
 
     public void ResetAllAttackWindows()

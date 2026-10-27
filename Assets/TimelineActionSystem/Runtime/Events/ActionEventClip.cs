@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
@@ -7,7 +8,8 @@ public enum ActionEventType
     PlayVfx,
     PlaySfx,
     AttackWindow,
-    ComboWindow
+    ComboWindow,
+    ApplyBuff   // 自分にバフ・デバフを付与(クリップの開始時に1回)
 }
 
 public sealed class ActionEventClip : PlayableAsset
@@ -35,6 +37,10 @@ public sealed class ActionEventClip : PlayableAsset
     [Tooltip("AttackWindow のとき、クリップの開始〜終了の間だけ有効になる Box 判定")]
     public AttackHitSettings attackHit = new AttackHitSettings();
 
+    [Header("自分へのバフ・デバフ")]
+    [Tooltip("ApplyBuff のとき、クリップの開始時に自分へ付与する(種類・層数・秒数は攻撃判定のバフと同じ設定)")]
+    public List<BuffGrant> selfBuffs = new List<BuffGrant>();
+
     // Timeline 上での初期クリップ長として使用する。
     public override double duration =>
         Mathf.Max(0.01f, effectDuration);
@@ -58,6 +64,7 @@ public sealed class ActionEventClip : PlayableAsset
         behaviour.audioClip = audioClip;
         behaviour.attackId = attackId;
         behaviour.attackHit = attackHit;
+        behaviour.selfBuffs = selfBuffs;
 
         return playable;
     }
@@ -80,6 +87,9 @@ public sealed class ActionEventBehaviour : PlayableBehaviour
     // 攻撃判定の設定と、このクリップが生成した判定
     public AttackHitSettings attackHit;
     public ActionEventReceiver.AttackBox spawnedAttack;
+
+    // 自分に付与するバフ・デバフ
+    public List<BuffGrant> selfBuffs;
 
     public GameObject spawnedEffect;
     public bool wasActive;
