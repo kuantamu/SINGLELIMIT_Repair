@@ -777,12 +777,14 @@ GameObject:
   - component: {fileID: 1046690011}
   - component: {fileID: 1046690010}
   - component: {fileID: 1046690017}
-  - component: {fileID: 1046690016}
   - component: {fileID: 1046690019}
   - component: {fileID: 1046690018}
   - component: {fileID: 1046690021}
   - component: {fileID: 1046690020}
   - component: {fileID: 1046690022}
+  - component: {fileID: 1046690024}
+  - component: {fileID: 1046690023}
+  - component: {fileID: 1046690025}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -905,30 +907,6 @@ Transform:
   - {fileID: 670365259}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1046690016
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1046690009}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c611f4e15fdd9064e96a01b337b1ec00, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CharactorStatus
-  statusBase:
-    HitState: 0
-    MaxHP: 0
-    CurrentHP: 0
-    Attack: 0
-    CriticalRate: 0
-    CriticalMult: 0
-    DefenseRate: 0
-    SlashResistance: 0
-    PierceResistance: 0
-    StrikeResistance: 0
-  isEnemy: 0
 --- !u!114 &1046690017
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -941,8 +919,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6e8d4aa6fb761c40b97f61bae4bc638, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DamagePopupGenerator
-  damageUI: {fileID: 0}
-  buffUI: {fileID: 0}
+  damageUI: {fileID: 3029409561959466786, guid: cc0d87c0e9a62e943aa20cfa958d5378, type: 3}
+  buffUI: {fileID: 185492872083190597, guid: 8bc50c78c624dbf4896cf5f0bcaa1904, type: 3}
 --- !u!114 &1046690018
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -970,7 +948,7 @@ PlayableDirector:
   m_GameObject: {fileID: 1046690009}
   m_Enabled: 1
   serializedVersion: 3
-  m_PlayableAsset: {fileID: 11400000, guid: 7422ef5e74a8bef4b86195da8b3350ed, type: 2}
+  m_PlayableAsset: {fileID: 11400000, guid: c03f9e881bf299448a037b73d49a8969, type: 2}
   m_InitialState: 1
   m_WrapMode: 2
   m_DirectorUpdateMode: 1
@@ -1004,6 +982,16 @@ PlayableDirector:
     value: {fileID: 1046690021}
   - key: {fileID: -6490346385007978822, guid: c03f9e881bf299448a037b73d49a8969, type: 2}
     value: {fileID: 670365258}
+  - key: {fileID: 922294465659331314, guid: aa5b5d41241a62c4ebd2346aa71393ba, type: 2}
+    value: {fileID: 1046690021}
+  - key: {fileID: 3583464603056706749, guid: aa5b5d41241a62c4ebd2346aa71393ba, type: 2}
+    value: {fileID: 1046690021}
+  - key: {fileID: -6921481187038151899, guid: a4ee96efa6ac344419bf98124462e78c, type: 2}
+    value: {fileID: 1046690021}
+  - key: {fileID: -1696373802614852627, guid: 47387307b825aaf40a37cf730c7e78dc, type: 2}
+    value: {fileID: 1046690021}
+  - key: {fileID: -6975796388036232229, guid: c03f9e881bf299448a037b73d49a8969, type: 2}
+    value: {fileID: 1046690021}
   m_ExposedReferences:
     m_References: []
 --- !u!82 &1046690020
@@ -1117,6 +1105,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ActionEventReceiver
   effectRoot: {fileID: 1046690015}
   audioSource: {fileID: 1046690020}
+  attackRoot: {fileID: 1046690015}
+  attacker: {fileID: 1046690023}
+  debugLog: 0
 --- !u!114 &1046690022
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1138,6 +1129,61 @@ MonoBehaviour:
   attackActionIds: 020000000500000006000000
   specialActionId: 7
   attackBufferDuration: 0.2
+--- !u!114 &1046690023
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1046690009}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c611f4e15fdd9064e96a01b337b1ec00, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CharactorStatus
+  statusBase:
+    HitState: 0
+    MaxHP: 100
+    CurrentHP: 0
+    Attack: 10
+    CriticalRate: 0
+    CriticalMult: 0
+    DefenseRate: 0
+    SlashResistance: 1
+    PierceResistance: 1
+    StrikeResistance: 1
+  isEnemy: 0
+  onHitBuffs: []
+--- !u!114 &1046690024
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1046690009}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b61420e023ad3ce4a934ec660b59e6d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HurtBox
+  status: {fileID: 1046690023}
+  damageMultiplier: 1
+  receiveBuffs: 1
+--- !u!114 &1046690025
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1046690009}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d920010b5c8876b42ae4990ebff4a7c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AttackHitboxDebugView
+  visible: 1
+  fillColor: {r: 1, g: 0.15, b: 0.15, a: 0.25}
+  lineColor: {r: 1, g: 0.2, b: 0.2, a: 1}
 --- !u!1 &1322244943
 GameObject:
   m_ObjectHideFlags: 0
@@ -1147,6 +1193,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1322244944}
+  - component: {fileID: 1322244946}
+  - component: {fileID: 1322244945}
+  - component: {fileID: 1322244948}
+  - component: {fileID: 1322244947}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -1170,6 +1220,83 @@ Transform:
   - {fileID: 943079679}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1322244945
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1322244943}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c611f4e15fdd9064e96a01b337b1ec00, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CharactorStatus
+  statusBase:
+    HitState: 0
+    MaxHP: 1000
+    CurrentHP: 100
+    Attack: 0
+    CriticalRate: 0
+    CriticalMult: 0
+    DefenseRate: 0
+    SlashResistance: 0
+    PierceResistance: 0
+    StrikeResistance: 0
+  isEnemy: 1
+  onHitBuffs: []
+--- !u!114 &1322244946
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1322244943}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6e8d4aa6fb761c40b97f61bae4bc638, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DamagePopupGenerator
+  damageUI: {fileID: 3029409561959466786, guid: cc0d87c0e9a62e943aa20cfa958d5378, type: 3}
+  buffUI: {fileID: 185492872083190597, guid: 8bc50c78c624dbf4896cf5f0bcaa1904, type: 3}
+--- !u!114 &1322244947
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1322244943}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b61420e023ad3ce4a934ec660b59e6d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HurtBox
+  status: {fileID: 1322244945}
+  damageMultiplier: 1
+  receiveBuffs: 1
+--- !u!136 &1322244948
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1322244943}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!1 &1678673851
 GameObject:
   m_ObjectHideFlags: 0

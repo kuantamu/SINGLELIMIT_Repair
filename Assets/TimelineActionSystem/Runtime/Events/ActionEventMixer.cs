@@ -9,10 +9,11 @@ public sealed class ActionEventMixer : PlayableBehaviour
     public override void OnGraphStop(Playable playable)
     {
         // エディットモードのプレビューだけを後片付けする。
-        // ゲーム実行中のエフェクトの寿命には干渉しない。
+        // ゲーム実行中のエフェクト・攻撃判定の寿命には干渉しない。
         if (!Application.isPlaying && cachedReceiver != null)
         {
             cachedReceiver.StopAllVfx();
+            cachedReceiver.StopAllAttackBoxes();
             cachedReceiver = null;
         }
     }
@@ -65,11 +66,18 @@ public sealed class ActionEventMixer : PlayableBehaviour
                         break;
 
                     case ActionEventType.AttackWindow:
-                        receiver.SetAttackWindow(
-                            behaviour.attackId, true);
+                        // 攻撃判定(Box)を生成して判定を開始する
+                        behaviour.spawnedAttack = receiver.BeginAttack(
+                            behaviour.attackId,
+                            behaviour.attackHit);
                         break;
                     case ActionEventType.ComboWindow:
                         receiver.SetComboWindow(true);
+                        break;
+
+                    case ActionEventType.ApplyBuff:
+                        // クリップの開始時に、自分へバフ・デバフを付与する(1回だけ)
+                        receiver.ApplyBuffsToSelf(behaviour.selfBuffs);
                         break;
                 }
             }
@@ -90,8 +98,9 @@ public sealed class ActionEventMixer : PlayableBehaviour
                         break;
 
                     case ActionEventType.AttackWindow:
-                        receiver.SetAttackWindow(
-                            behaviour.attackId, false);
+                        // 攻撃判定を消して、判定を終了する
+                        receiver.EndAttack(behaviour.spawnedAttack);
+                        behaviour.spawnedAttack = null;
                         break;
                     case ActionEventType.ComboWindow:
                         receiver.SetComboWindow(false);

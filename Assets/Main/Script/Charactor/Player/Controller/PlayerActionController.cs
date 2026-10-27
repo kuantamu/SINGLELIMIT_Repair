@@ -85,7 +85,7 @@ public class PlayerActionController : MonoBehaviour
     {
         comboWindowOpen =
             CurrentState == PlayerActionState.Attack && open;
-        Debug.Log($"OnComboWindowChanged: {comboWindowOpen}");
+        //Debug.Log($"OnComboWindowChanged: {comboWindowOpen}");
     }
 
     // TimelineActionPlayerの再生を終了する
@@ -93,7 +93,7 @@ public class PlayerActionController : MonoBehaviour
         string presetName, 
         TimelineActionPreset.Entry entry)
     {
-        Debug.Log($"OnPlaybackEnded: {presetName}, {entry.id}");
+        //Debug.Log($"OnPlaybackEnded: {presetName}, {entry.id}");
         if (presetName != expectedPresetName ||
     entry.id != expectedActionId)
         {
@@ -124,7 +124,7 @@ public class PlayerActionController : MonoBehaviour
             return;
         }
 
-        Debug.Log($"HandleInput: {CurrentState}");
+        //Debug.Log($"HandleInput: {CurrentState}");
 
         // 攻撃中は攻撃専用の処理だけ行う
         if (CurrentState == PlayerActionState.Attack)
