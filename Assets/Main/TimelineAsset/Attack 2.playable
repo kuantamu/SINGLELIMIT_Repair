@@ -350,6 +350,7 @@ MonoBehaviour:
       serializedVersion: 2
       m_Bits: 4294967295
     rehitInterval: 0
+  selfBuffs: []
 --- !u!114 &2575820704818222612
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -385,8 +386,9 @@ MonoBehaviour:
     targetType: 0
     hurtLayers:
       serializedVersion: 2
-      m_Bits: 4294967295
+      m_Bits: 512
     rehitInterval: 0
+  selfBuffs: []
 --- !u!114 &8664128762349464756
 MonoBehaviour:
   m_ObjectHideFlags: 1

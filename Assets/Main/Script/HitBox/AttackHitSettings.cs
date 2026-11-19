@@ -36,7 +36,7 @@ public sealed class AttackHitSettings
     [Header("当たる相手")]
     public HitTargetType targetType = HitTargetType.OppositeTeam;
 
-    public LayerMask hurtLayers = ~0;
+    public LayerMask hurtLayers = 9;
 
     [Tooltip("同じ相手に再びヒットする間隔(秒)。0以下ならクリップ中は同じ相手に1回だけ")]
     public float rehitInterval = 0f;

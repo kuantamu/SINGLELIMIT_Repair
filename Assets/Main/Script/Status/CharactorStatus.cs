@@ -10,11 +10,6 @@ public class CharactorStatus : MonoBehaviour
 {
     [SerializeField] public StatusBase statusBase = new StatusBase();
 
-    [SerializeField] bool isEnemy = false;
-
-    /// <summary>敵側のキャラか(HitBox が敵味方の判定に使う)</summary>
-    public bool IsEnemy => isEnemy;
-
     [Header("攻撃が当たったとき、相手に付与するバフ・デバフ")]
     [SerializeField] private List<BuffGrant> onHitBuffs = new List<BuffGrant>();
 
@@ -50,7 +45,7 @@ public class CharactorStatus : MonoBehaviour
         // バフ・デバフの時間経過・毒ダメージなどを処理
         Buffs.UpdateEffects(Time.deltaTime);
     }
-
+    #region ステータス取得
     // ============================================================
     //  バフ・デバフ:付与
     //
@@ -138,7 +133,7 @@ public class CharactorStatus : MonoBehaviour
 
     /// <summary>指定した種類が永続(時間で消えない)状態か</summary>
     public bool IsBuffPermanent(BuffType type) => Buffs.IsPermanent(type);
-
+    #endregion
     // ============================================================
     //  ステータス操作(バフ効果クラスからも使う)
     // ============================================================
@@ -153,6 +148,7 @@ public class CharactorStatus : MonoBehaviour
     //  攻撃・ダメージ
     // ============================================================
 
+    #region 攻撃
     public void ReceiveDamage(CharactorStatus target)
     {
         CharaAttack(target);
@@ -178,12 +174,17 @@ public class CharactorStatus : MonoBehaviour
         // 攻撃が当たったときの付与(インスペクターで設定)
         GiveBuffs(targetStatus, onHitBuffs);
     }
-
+    #endregion
+    #region ダメージ処理
     /// <summary>ダメージをそのまま受ける(毒など、無敵や急所の影響を受けないダメージ用)</summary>
     public void AddDamage(int damage)
     {
         statusBase.CurrentHP -= damage;
         Popup.Damage(damage);
+        if (statusBase.CurrentHP <= 0)
+        {
+            statusBase.HitState = HitState.Dead;
+        }
     }
 
     /// <summary>攻撃によるダメージを受ける(無敵・急所を考慮)</summary>
@@ -199,5 +200,10 @@ public class CharactorStatus : MonoBehaviour
         statusBase.CurrentHP -= dam;
         Popup.Damage((int)dam);
         Debug.Log(statusBase.CurrentHP + "/" + statusBase.MaxHP + "Critical:" + damage.IsCritical);
+        if (statusBase.CurrentHP <= 0)
+        {
+            statusBase.HitState = HitState.Dead;
+        }
     }
+    #endregion
 }

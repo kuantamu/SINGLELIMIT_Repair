@@ -248,7 +248,7 @@ public class HitBox : MonoBehaviour
         {
             if (isEnter)
                 Log($"「{target.name}」は陣営の条件に合わない(Target Type={targetType}, " +
-                    $"攻撃者 Is Enemy={(owner != null ? owner.IsEnemy.ToString() : "なし")}, 相手 Is Enemy={target.IsEnemy})");
+                    $"攻撃者 Is Enemy={(owner != null ? owner.statusBase.Faction.ToString() : "なし")}, 相手 Is Enemy={target.statusBase.Faction})");
             return;
         }
 
@@ -280,7 +280,7 @@ public class HitBox : MonoBehaviour
     {
         if (targetType == HitTargetType.Everyone || owner == null) return true;
 
-        bool sameTeam = target.IsEnemy == owner.IsEnemy;
+        bool sameTeam = target.statusBase.Faction == owner.statusBase.Faction;
         return targetType == HitTargetType.SameTeam ? sameTeam : !sameTeam;
     }
 

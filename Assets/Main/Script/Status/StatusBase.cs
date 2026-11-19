@@ -13,7 +13,14 @@ public enum HitState
 {
     Normal,
     Defense,
-    Invincible
+    Invincible,
+    Dead
+}
+public enum Faction
+{
+    Player,
+    Enemy,
+    Ally
 }
 
 [Serializable]
@@ -21,6 +28,8 @@ public struct StatusBase
 {
     [SerializeField]
     public HitState HitState;
+    [SerializeField]
+    public Faction Faction;
     //ç≈ëÂHP
     [SerializeField]
     public float MaxHP;
